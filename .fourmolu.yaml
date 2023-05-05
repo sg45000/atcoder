@@ -1,0 +1,3 @@
+formattingConfigs:
+  default:
+    qualifiedImports: PreQualified
