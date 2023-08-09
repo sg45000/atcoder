@@ -1,30 +1,46 @@
 import math
+from functools import reduce
 
+# 余弦定理
+def angle(a, b, c):
+    cosA = (b ** 2 + c ** 2 - a ** 2) / (2 * b * c)
+    if -1 > cosA or 1 < cosA:
+        cosA = round(cosA)
+    return math.degrees(math.acos(cosA))
 
-def calculate_angle(p1, p2, p3):
-    """2次元座標上の3点を線で結んだ時の内角を計算する関数"""
-    
-    # p1を原点としたp2とp3のベクトルを計算
-    v1 = (p2[0] - p1[0], p2[1] - p1[1])
-    v2 = (p3[0] - p1[0], p3[1] - p1[1])
-    
-    # 内積を計算
-    dot_product = v1[0] * v2[0] + v1[1] * v2[1]
-    
-    # 外積を計算
-    cross_product = v1[0] * v2[1] - v1[1] * v2[0]
-    
-    # atan2関数を使用して角度を計算
-    angle = math.atan2(cross_product, dot_product)
-    
-    # ラジアンを度数に変換
-    angle_degrees = math.degrees(angle)
-    
-    # 角度が負の場合は360度を加算して正の角度に変換
-    if angle_degrees < 0:
-        angle_degrees += 360
-    
-    return angle_degrees
+#2点間の距離を求める
+def distance(a, b):
+    ax, ay = a
+    bx, by = b
+    return math.sqrt((ax - bx) ** 2 + (ay - by) ** 2)
+
+# listを受け取って最大値を返す
+def maximum(*int_list):
+    return reduce(lambda a, b: max(a, b), int_list)
+
+def binary_search_closest(lst, x, low=0, high=None):
+    if high is None:
+        high = len(lst) - 1
+
+    if low > high:  # lowとhighが交差した場合
+        if abs(lst[low] - x) < abs(lst[high] - x):
+            return lst[low]
+        else:
+            return lst[high]
+        
+    if x < lst[low]:  # xがlstの最小値より小さい場合
+        return lst[low]
+    if x > lst[high]:  # xがlstの最大値より大きい場合
+        return lst[high]
+
+    mid = (low + high) // 2
+    if lst[mid] == x:
+        return lst[mid]
+    elif lst[mid] < x:
+        return binary_search_closest(lst, x, mid+1, high)
+    else:
+        return binary_search_closest(lst, x, low, mid-1)
+        
 
 
 N = int(input())
@@ -32,13 +48,18 @@ P = [list(map(int, input().split(" "))) for _ in range(N)]
 
 answer = 0
 for i in range(N):
+    declinations = []
     for j in range(N):
         if i == j:
             continue
-        for k in range(N):
-            if j == k or i == k:
-                continue
-            angle = calculate_angle(P[i], P[j], P[k])
-            if angle <= 180:
-                answer = max(answer, angle)
+        x, y = map(lambda p: p[1] - p[0], zip(P[i], P[j]))
+        d = math.degrees(math.atan2(y, x))
+        if d < 0:
+            d += 360
+        declinations.append(d)
+    for d1 in declinations:
+        target = d1 - 180 if d1 > 180 else d1 + 180
+        d2 = binary_search_closest(sorted(declinations), target)
+        d3 = abs(d1 - d2)
+        answer = max(answer, d3 if d3 <= 180 else 360 - d3)
 print(answer)
