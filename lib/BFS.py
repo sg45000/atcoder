@@ -1,23 +1,27 @@
 from collections import deque
 
+"""
+n: ノード総数
+s: 最初に探索するノード
+g: グラフ
+"""
+def bfs(n, s, g, unit, operation):
+    q = deque()
+    q.append(s)
+    visited = [unit] * n
 
-H, W = list(map(int, input().split(" ")))
-rs, cs = list(map(int, input().split(" ")))
-rs, cs = rs - 1, cs - 1
-rt, ct = list(map(int, input().split(" ")))
-rt, ct = rt - 1, ct - 1
-S = [input() for _ in range(H)]
-
-# 0=上, 1=右, 2=下, 3=左 とする 
-def neighbors(y, x):
-    return [(0, y - 1, x), (1, y, x + 1), (2, y + 1, x), (3, y, x - 1)]
-
-
-def in_range(y, x):
-    return 0 <= y < H and 0 <= x < W
+    while q:
+        v = s.popleft()
+        for nex in g[v]:
+            if unit < visited[nex]:
+                continue
+            visited[nex] = operation(visited[v])
+            q.append(nex)
+            
+    return visited
 
 
-def bfs_01():
+def bfs_01(n, s, g, ):
     q = deque()
 
     visited = [[[float("inf")] * 4 for _ in range(W)] for _ in range(H)]
@@ -28,7 +32,7 @@ def bfs_01():
     while len(q) > 0:
         s = q.popleft()
         s_d, s_y, s_x = s
-        for d, y, x in neighbors(s_y, s_x):
+        for d, y, x in g(s_y, s_x):
             if not in_range(y, x):
                 continue
             if S[y][x] == "#":
@@ -43,7 +47,3 @@ def bfs_01():
                     q.append((d, y, x))
     
     return min(visited[rt][ct])
-
-
-ans = bfs()
-print(ans)
