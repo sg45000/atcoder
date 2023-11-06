@@ -1,10 +1,25 @@
 """
-  重複組合せを求める 素数で割ったあまりを求める時に使う
-  n = 全ての球の数
-  r = 片方の球の数
+  組合せを求める 素数で割ったあまりを求める時に使う
+  n = 全数
+  r = 何個選ぶか
   p = 法
+  計算量: O(r)
 """
-def ncr_with_mod(n, r, p):
+def ncr_mod(n, r, mod):
+    ret = 1
+    for i in range(1, r+1):
+        ret = (ret * (n-i+1) * pow(i, mod-2, mod)) % mod
+    return ret
+
+
+"""
+  重複組合せを求める 素数で割ったあまりを求める時に使う
+  n = 種類数
+  r = 重複を許して何個選ぶか
+  p = 法
+  計算量: O(n)
+"""
+def dup_comb_mod(n, r, p):
     fact = [1] * (n + 5)  # iの階乗をpで割ったあまり
     fact_inv = [1] * (n + 5)  # factの逆元
     inv = [1] * (n + 5)  # iの逆元
