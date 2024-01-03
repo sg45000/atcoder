@@ -1,6 +1,6 @@
 from functools import reduce
 from typing import Generic, List, Set, Tuple, TypeVar
-from itertools import chain
+from itertools import chain, count
 
 T = TypeVar("T")
 
@@ -11,6 +11,15 @@ T = TypeVar("T")
 getInts = lambda: list(map(int, input().split()))
 
 getChars = lambda: list(input())
+
+#############################
+# Functional
+#############################
+
+
+def identify(x: T) -> T:
+    return x
+
 
 #############################
 # List
@@ -108,7 +117,7 @@ def linear_scan_n(
 def from_grid_gs(f, grid: FlexibleList[FlexibleList[T]]) -> Set[Coordinate]:
     ret = []
     for i in range(grid.begin, grid.end + 1):
-        for j in range(grid[i].begin, grid.end + 1):
+        for j in range(grid[i].begin, grid[i].end + 1):
             if f(grid[i][j]):
                 ret.append((i, j))
     return set(ret)
@@ -123,22 +132,66 @@ def rotate(coord: Coordinate, n: int) -> Coordinate:
 
 
 def rotates_gs(coords: Set[Coordinate], n: int) -> Set[Coordinate]:
+    """
+    正方形を前提としてGridSetを90度回転
+    """
     return set(rotate(coord, n) for coord in coords)
 
 
 def is_shifted_gs(s1: Set[Coordinate], s2: Set[Coordinate]) -> bool:
+    """
+    2つのGridSetを縦横の並行移動した時に同じ形になるか
+    """
     if len(s1) != len(s2):
         return False
     if len(s1) == len(s2) == 0:
         return True
-    return all(a == b for a, b in zip(s1, sorted(normalize_gs(s2))))
+    return all(a == b for a, b in zip(normalize_gs(s1), normalize_gs(s2)))
 
 
 def normalize_gs(coords: Set[Coordinate]) -> Set[Coordinate]:
+    """
+    GridSetの座標を正規化((0,0)の原点を基準に)する
+    """
     i, j = min(coords)
-    return set([(u - i + 1, v - j + 1) for u, v in coords])
+    return set(sorted([(u - i + 1, v - j + 1) for u, v in coords]))
+
+
+def extract_from_extended_gs(
+    upper_left: Coordinate, lower_right: Coordinate, h: int, w: int, gs: Set[Coordinate]
+) -> Set[Coordinate]:
+    """
+    縦横に無限に拡張したGridから指定した範囲を切り取る
+    0-indexグリッドを前提とする
+    """
+    ret = set()
+    for i, j in range_to_coords(upper_left, lower_right):
+        if (i % h, j % w) in gs:
+            ret.add((i, j))
+    return ret
 
 
 #############################
 # Main
 #############################
+
+H, W = getInts()
+
+A = get_char_grid((0, 0), (H - 1, W - 1))
+
+B = get_char_grid((0, 0), (H - 1, W - 1))
+
+A_GS = from_grid_gs(lambda x: x == "#", A)
+B_GS = from_grid_gs(lambda x: x == "#", B)
+
+ixmap = lambda v, h, w: (v[0] % h, v[1] % w)
+
+for i in range(2 * H - 1):
+    for j in range(2 * W - 1):
+        if is_shifted_gs(
+            extract_from_extended_gs((i, j), (i + H - 1, j + W - 1), H, W, A_GS),
+            B_GS,
+        ):
+            print("Yes")
+            exit()
+print("No")
