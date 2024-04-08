@@ -809,3 +809,28 @@ def count_digit(i):
 #############################
 # Main
 #############################
+N = int(input())
+AB = get_ints_n_lines(N)
+G = defaultdict(list)
+visited = defaultdict(bool)
+for a, b in AB:
+    G[a].append(b)
+    G[b].append(a)
+    visited[a] = False
+    visited[b] = False
+
+
+q = deque()
+q.appendleft(1)
+
+ans = 0
+while q:
+    u = q.popleft()
+    ans = max(ans, u)
+    for v in G[u]:
+        if visited[v]:
+            continue
+        visited[v] = True
+        q.append(v)
+
+print(ans)
