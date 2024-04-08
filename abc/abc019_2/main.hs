@@ -9,7 +9,7 @@ fold' :: [Set] -> Char -> [Set]
 fold' [] x = [Set x 1]
 fold' acc x =
   if c l == x
-    then init acc ++ [l {i = i l + 1}]
+    then init acc ++ [l{i = i l + 1}]
     else acc ++ [Set x 1]
-  where
-    l = last acc
+ where
+  l = last acc

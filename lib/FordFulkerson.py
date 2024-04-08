@@ -6,9 +6,27 @@ from collections import defaultdict
 
  使用問題例: https://atcoder.jp/contests/abc091/tasks/arc092_a
 """
-from collections import defaultdict
 
-class Graph:
+
+class NetWorkFlowGraph:
+    """
+    使用例
+
+    g = Graph(6)
+    g.add_edge(0, 1, 16 )
+    g.add_edge(0, 2, 13 )
+    g.add_edge(1, 2, 10 )
+    g.add_edge(1, 3, 12 )
+    g.add_edge(2, 1, 4 )
+    g.add_edge(2, 4, 14)
+    g.add_edge(3, 2, 9 )
+    g.add_edge(3, 5, 20 )
+    g.add_edge(4, 3, 7 )
+    g.add_edge(4, 5, 4)
+
+    print("The maximum possible flow is %d " % g.FordFulkerson(0, 5))
+
+    """
 
     def __init__(self, vertices):
         # グラフの頂点数を初期化
@@ -24,7 +42,7 @@ class Graph:
         # ソースノードからシンクノードへのパスを探すためのBFSアルゴリズム。
         # 全頂点を未訪問に設定
         visited = [False] * (self.V)
-        
+
         # ソースノードをキューに追加し、訪問済みとマーク
         queue = []
         queue.append(s)
@@ -33,13 +51,13 @@ class Graph:
         # BFSループ
         while queue:
             u = queue.pop(0)
-            
+
             # uから出る全エッジに対して
             for v, val in self.graph[u].items():
-                
+
                 # エッジが残容量を持ち、終点が未訪問である場合
                 if visited[v] == False and val > 0:
-                    
+
                     # キューにエッジの終点を追加し、訪問済みとマーク
                     queue.append(v)
                     visited[v] = True
@@ -57,7 +75,7 @@ class Graph:
 
         # 親リストを初期化。これはBFSで見つけたパスを格納する。
         parent = [-1] * (self.V)
-        
+
         # 最大フローを0に初期化
         max_flow = 0
 
@@ -67,7 +85,7 @@ class Graph:
             # パスを通じて送ることができるフローを見つける。最初は無限大とする。
             path_flow = float("Inf")
             s = sink
-            
+
             # シンクからソースまでのパスを逆にたどる
             while s != source:
                 # 経路上の最小容量を見つける
@@ -88,24 +106,5 @@ class Graph:
         # 最大フローを返す
         return max_flow
 
+
 # ライブラリ end
-
-
-"""
-使用例
-
-g = Graph(6)
-g.add_edge(0, 1, 16 )
-g.add_edge(0, 2, 13 )
-g.add_edge(1, 2, 10 )
-g.add_edge(1, 3, 12 )
-g.add_edge(2, 1, 4 )
-g.add_edge(2, 4, 14)
-g.add_edge(3, 2, 9 )
-g.add_edge(3, 5, 20 )
-g.add_edge(4, 3, 7 )
-g.add_edge(4, 5, 4)
-
-print("The maximum possible flow is %d " % g.FordFulkerson(0, 5))
-
-"""
