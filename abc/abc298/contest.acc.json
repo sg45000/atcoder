@@ -9,7 +9,12 @@
       "id": "abc298_a",
       "label": "A",
       "title": "Job Interview",
-      "url": "https://atcoder.jp/contests/abc298/tasks/abc298_a"
+      "url": "https://atcoder.jp/contests/abc298/tasks/abc298_a",
+      "directory": {
+        "path": "a",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc298_b",
@@ -32,7 +37,12 @@
       "id": "abc298_d",
       "label": "D",
       "title": "Writing a Numeral",
-      "url": "https://atcoder.jp/contests/abc298/tasks/abc298_d"
+      "url": "https://atcoder.jp/contests/abc298/tasks/abc298_d",
+      "directory": {
+        "path": "d",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc298_e",
