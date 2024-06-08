@@ -12,10 +12,10 @@ dp[0][0] = 1
 
 for i in range(N):
     for j in range(N):
-        if S[i] == '(' or S[i] == '?':
+        if S[i] == "(" or S[i] == "?":
             dp[i + 1][j + 1] += dp[i][j]
             dp[i + 1][j + 1] %= 998244353
-        if j > 0 and (S[i] == ')' or S[i] == '?'):
+        if j > 0 and (S[i] == ")" or S[i] == "?"):
             dp[i + 1][j - 1] += dp[i][j]
             dp[i + 1][j - 1] %= 998244353
 

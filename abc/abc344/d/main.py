@@ -723,34 +723,19 @@ class NetWorkFlowGraph:
 #############################
 T = input()
 N = int(input())
-A = []
-S = []
 
-
-for i in range(N):
-    AS = input().split(" ")
-    a = AS[0]
-    A.append(int(a))
-    s = [""] + AS[1:]
-    S.append(s)
-
-
-dp = [[INF] * (len(T) + 1) for _ in range(N + 1)]
-dp[0][0] = 0
+st = [INF] * (len(T) + 1)
+st[0] = 0
 
 for i in range(N):
-    for j in range(len(T) + 1):
-        a = A[i]
-        s = S[i]
-        for k in range(a + 1):
-            if dp[i][j] == INF:
-                continue
-            p = T[:j] + s[k]
+    AS = get_chars_with_trim(" ")
+    S = [""] + AS[1:]
+    next_st = [INF] * (len(T) + 1)
+    for j in range(len((T)) + 1):
+        for s in S:
+            p = T[:j] + s
             if T[: len(p)] == p:
-                dp[i + 1][len(p)] = min(
-                    dp[i + 1][len(p)], min(dp[i][len(p)], dp[i][j] + 1)
-                )
-if dp[N][len(T)] == INF:
-    print(-1)
-else:
-    print(dp[N][len(T)])
+                next_st[len(p)] = min(next_st[len(p)], st[len(p)], st[j] + 1)
+    st = next_st
+
+print(-1) if st[len(T)] == INF else print(st[len(T)])
