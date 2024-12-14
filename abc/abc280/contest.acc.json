@@ -9,7 +9,12 @@
       "id": "abc280_a",
       "label": "A",
       "title": "Pawn on a Grid",
-      "url": "https://atcoder.jp/contests/abc280/tasks/abc280_a"
+      "url": "https://atcoder.jp/contests/abc280/tasks/abc280_a",
+      "directory": {
+        "path": "a",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc280_b",
@@ -38,7 +43,12 @@
       "id": "abc280_e",
       "label": "E",
       "title": "Critical Hit",
-      "url": "https://atcoder.jp/contests/abc280/tasks/abc280_e"
+      "url": "https://atcoder.jp/contests/abc280/tasks/abc280_e",
+      "directory": {
+        "path": "e",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc280_f",

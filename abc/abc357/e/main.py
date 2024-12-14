@@ -2,13 +2,15 @@ import bisect
 import copy
 import heapq
 from math import sqrt
-from functools import reduce
+from functools import cache, reduce
+from operator import add
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
 from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
 from sortedcontainers import SortedSet, SortedList, SortedDict
+from atcoder import scc
 
 
 sys.setrecursionlimit(10**9)
@@ -909,10 +911,46 @@ def lookup_closest_value(xs: List[T], x: T) -> T | None:
 #############################
 N = int(input())
 A = get_ints()
-G = [[] for _ in range(N)]
+g = scc.SCCGraph(N)
+
 
 for i in range(N):
-    G[i].append(A[i])
+    g.add_edge(i, A[i] - 1)
 
-def touhi():
-    
+S = [0] * N
+
+for s in g.scc():
+    if len(s) >= 2:
+        for i in s:
+            S[i] = len(s)
+
+
+visited = [0] * N
+
+
+@cache
+def dfs(u):
+    if visited[u] > 0:
+        return visited[u]
+    v = A[u] - 1
+    if S[v] > 0:
+        visited[u] += S[v] + 1
+        return visited[u]
+    if u != v:
+        visited[u] = dfs(v)
+    visited[u] += 1
+    return visited[u]
+
+
+for i in range(N):
+    if visited[i] == 0:
+        dfs(i)
+
+
+ans = 0
+for i in range(N):
+    if S[i]:
+        ans += S[i]
+    else:
+        ans += visited[i]
+print(ans)

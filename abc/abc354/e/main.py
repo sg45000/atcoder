@@ -999,8 +999,17 @@ def calculateIntersectionVolume(p, q):
 N = int(input())
 
 AB = get_ints_n_lines(N)
+dp = [-1] * (2**N)
+dp[0] = 0
 
-for b in range(2 << N):
-    for i in range(N):
-        if b & 1 << i:
-            cards.append(AB[i])
+for i in range(1, 2**N):
+    p = 0
+    for j in range(N):
+        for k in range(j + 1, N):
+            if (i >> j & 1) and (i >> k & 1):
+                if (AB[j][0] == AB[k][0] or AB[j][1] == AB[k][1]) and dp[
+                    i ^ (1 << j) ^ (1 << k)
+                ] == 0:
+                    p = 1
+    dp[i] = p
+print("Takahashi" if dp[-1] else "Aoki")

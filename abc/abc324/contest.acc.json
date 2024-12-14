@@ -27,7 +27,12 @@
       "id": "abc324_d",
       "label": "D",
       "title": "Square Permutation",
-      "url": "https://atcoder.jp/contests/abc324/tasks/abc324_d"
+      "url": "https://atcoder.jp/contests/abc324/tasks/abc324_d",
+      "directory": {
+        "path": "d",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc324_e",

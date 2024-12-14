@@ -1,10 +1,12 @@
 from math import sqrt
 from functools import reduce
+from operator import add
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
 from itertools import chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
+from atcoder import lazysegtree
 
 sys.setrecursionlimit(10**9)
 
@@ -563,3 +565,40 @@ def is_odd(x):
 #############################
 # Main
 #############################
+# https://qiita.com/hyouchun/items/9fc32e3d8bdd9c59e3f6#6-%E5%8C%BA%E9%96%93%E5%A4%89%E6%9B%B4%E5%8C%BA%E9%96%93%E5%92%8C%E5%8F%96%E5%BE%97
+N, M = get_ints()
+A = get_ints()
+B = get_ints()
+
+id_ = 0
+e = 0
+
+
+# lazyをdataに適用する関数
+def mapping(func, ele):
+    return func + ele
+
+
+# lazyを下のlazyに伝播させる関数
+def composition(func_upper, func_lower):
+    return func_upper + func_lower
+
+
+lst = lazysegtree.LazySegTree(add, e, mapping, composition, id_, A)
+
+
+for i in range(M):
+    b = lst.get(B[i])
+    m = b // N
+    p = b % N
+    s = (B[i] + 1) % N
+    lst.set(B[i], 0)
+    lst.apply(0, N, m)
+    lst.apply(s, min(s + p, N), 1)
+    if p - (N - s) > 0:
+        lst.apply(0, p - (N - s), 1)
+
+ans = []
+for i in range(N):
+    ans.append(lst.get(i))
+print(*ans)

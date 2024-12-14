@@ -971,3 +971,44 @@ def z_algo(S: str) -> List[int]:
 #############################
 # Main
 #############################
+N = int(input())
+S = input()
+T = input()
+S += "--"
+
+q = deque()
+q.append(S)
+
+seen = defaultdict(lambda: -1)
+seen[S] = 0
+
+
+def next(s):
+    b = 0
+    for i in range(N + 1):
+        if s[i] == "-":
+            b = i
+            break
+    a = []
+    for i in range(N + 1):
+        if i - 1 == b or i == b or i + 1 == b:
+            continue
+        next_s = list(s)
+        next_s[b], next_s[b + 1], next_s[i], next_s[i + 1] = (
+            next_s[i],
+            next_s[i + 1],
+            next_s[b],
+            next_s[b + 1],
+        )
+        next_s = "".join(next_s)
+        if seen[next_s] == -1:
+            a.append(next_s)
+            seen[next_s] = seen[s] + 1
+    return a
+
+
+while q:
+    s = q.popleft()
+    for next_s in next(s):
+        q.append(next_s)
+print(seen[T + "--"])

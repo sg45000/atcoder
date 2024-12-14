@@ -295,7 +295,9 @@ def inversion_number(xs: List[int]):
     num = 0
     bit = BIT(len(xs))
     for i in range(len(xs)):
-        num += i - bit.sum(xs[i])  # num += 現時点でbitに移動した個数 - i番目の数値より小さい数値の個数
+        num += i - bit.sum(
+            xs[i]
+        )  # num += 現時点でbitに移動した個数 - i番目の数値より小さい数値の個数
         bit.add(xs[i], 1)
 
     return num
@@ -551,4 +553,24 @@ def accumulate_2d(arr: List[List[int]]):
 N, M = get_ints()
 X = get_ints()
 
-for  in range():
+dist = [0] * N
+for i in range(M - 1):
+    a, b = X[i], X[i + 1]
+
+    a, b = min(a, b), max(a, b)
+
+    # [a, b) の区間にd1=a-b+Nをプラスする
+    d1 = a - b + N
+    dist[a] += d1
+    dist[b] -= d1
+    # [b,N), [0,a) の区間にd2=b-aをプラスする
+    d2 = b - a
+    dist[b] += d2
+    dist[0] += d2
+    dist[a] -= d2
+
+for i in range(N - 1):
+    dist[i + 1] += dist[i]
+
+ans = min(dist)
+print(ans)

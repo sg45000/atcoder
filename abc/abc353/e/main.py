@@ -1,7 +1,7 @@
 import bisect
 import copy
 import heapq
-from math import sqrt
+from math import comb, sqrt
 from functools import reduce
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
 from itertools import chain, count, permutations
@@ -859,3 +859,24 @@ def lookup_closest_value(xs: List[T], x: T) -> T | None:
 #############################
 # Main
 #############################
+N = int(input())
+S = get_chars_with_trim(" ")
+
+stack = [S]
+ans = 0
+
+while stack:
+    xs = stack.pop()
+    d = defaultdict(list)
+
+    for x in xs:
+        if x == "":
+            continue
+        d[x[0]].append(x[1:])
+
+    for new_xs in d.values():
+        if len(new_xs) >= 2:
+            ans += comb(len(new_xs), 2)
+            stack.append(new_xs)
+
+print(ans)

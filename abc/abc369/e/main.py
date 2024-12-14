@@ -5,7 +5,7 @@ from math import sqrt
 from functools import reduce
 from operator import xor
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
-from itertools import accumulate, chain, count, permutations
+from itertools import accumulate, chain, count, permutations, product
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
@@ -919,6 +919,8 @@ def warshall_floyd(n, d):
                 d_via_k[i][j] = min(d[i][j], d[i][k] + d[k][j])
 
         d = d_via_k
+    for i in range(n):
+        d[i][i] = 0
     return d
 
 
@@ -969,5 +971,34 @@ def z_algo(S: str) -> List[int]:
 N, M = get_ints()
 UVT = get_ints_n_lines(M)
 
+G = [[INF] * N for _ in range(N)]
+
+for u, v, t in UVT:
+    G[u - 1][v - 1] = min(t, G[u - 1][v - 1])
+    G[v - 1][u - 1] = min(t, G[u - 1][v - 1])
+
+wf = warshall_floyd(N, G)
+
 
 Q = int(input())
+
+for i in range(Q):
+    K = int(input())
+    B = get_ints()
+
+    ans = INF
+    for rs in permutations(B):
+        for bi in range(1 << K):
+            total = 0
+            s = 0
+            for j, k in enumerate(rs):
+                u, v, t = UVT[k - 1]
+                u = u - 1
+                v = v - 1
+                if bi >> j & 1:
+                    u, v = v, u
+                total += wf[s][u] + t
+                s = v
+            total += wf[s][N - 1]
+            ans = min(ans, total)
+    print(ans)
