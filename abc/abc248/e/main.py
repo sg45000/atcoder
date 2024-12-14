@@ -2,7 +2,7 @@ import heapq
 from math import sqrt
 from functools import reduce
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
-from itertools import chain, count, permutations
+from itertools import chain, combinations, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
@@ -713,3 +713,31 @@ class NetWorkFlowGraph:
 #############################
 # Main
 #############################
+N, K = get_ints()
+XY = get_ints_n_lines(N)
+
+if K == 1:
+    print("Infinity")
+    exit()
+
+lines = set()
+ans = 0
+for i in range(N - 1):
+    for j in range(i + 1, N):
+        x1, y1 = XY[i]
+        x2, y2 = XY[j]
+        a = (x1 - x2) / (y1 - y2)
+        if a in lines:
+            continue
+        cnt = 0
+        ks = []
+        for k in range(N):
+
+            x3, y3 = XY[k]
+
+            if (x2 - x1) * (y3 - y1) == (y2 - y1) * (x3 - x1):
+                cnt += 1
+
+        if cnt >= K:
+            ans += 1
+print(ans)

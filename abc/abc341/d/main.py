@@ -1,6 +1,7 @@
 import heapq
 from math import sqrt
 from functools import reduce
+import math
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
 from itertools import chain, count, permutations
 from collections import defaultdict, deque
@@ -721,3 +722,21 @@ class NetWorkFlowGraph:
 #############################
 # Main
 #############################
+N, M, K = get_ints()
+
+lcm = math.lcm(N, M)
+
+
+def binary_search(l, r):
+    if r - l < 2:
+        return r
+    m = (l + r) // 2
+    if (m // N) + (m // M) - ((m // lcm) * 2) >= K:
+        return binary_search(l, m)
+    else:
+        return binary_search(m, r)
+
+
+ans = binary_search(0, 10**30)
+
+print(ans)

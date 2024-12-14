@@ -46,7 +46,12 @@
       "id": "abc267_e",
       "label": "E",
       "title": "Erasing Vertices 2",
-      "url": "https://atcoder.jp/contests/abc267/tasks/abc267_e"
+      "url": "https://atcoder.jp/contests/abc267/tasks/abc267_e",
+      "directory": {
+        "path": "e",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc267_f",

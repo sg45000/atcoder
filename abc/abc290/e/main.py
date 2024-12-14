@@ -907,3 +907,28 @@ def lookup_closest_value(xs: List[T], x: T) -> T | None:
 #############################
 # Main
 #############################
+N = int(input())
+A = get_ints()
+
+# いい線の数を数える
+P = defaultdict(list)
+
+for i in range(N):
+    P[A[i]].append(i)
+
+ans = 0
+for i in range(1, N + 1):
+    ans += (N + 1 - i) * (i // 2)
+
+for i in range(N):
+    l = 0
+    r = len(P[i]) - 1
+    while l < r:
+        if P[i][l] < (N + 1 - P[i][r]):
+            ans -= (r - l) * P[i][l]
+            l += 1
+        else:
+            ans -= (r - l) * (N + 1 - P[i][r])
+            r -= 1
+
+print(ans)

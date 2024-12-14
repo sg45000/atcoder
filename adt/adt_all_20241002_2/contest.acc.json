@@ -1,0 +1,108 @@
+{
+  "contest": {
+    "id": "adt_all_20241002_2",
+    "title": "AtCoder Daily Training ALL 2024/10/02 18:00start",
+    "url": "https://atcoder.jp/contests/adt_all_20241002_2"
+  },
+  "tasks": [
+    {
+      "id": "abc366_a",
+      "label": "A",
+      "title": "Election 2",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc366_a",
+      "directory": {
+        "path": "a",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "codequeen2024_final_a",
+      "label": "B",
+      "title": "Welcome to AtCoder Land 2",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/codequeen2024_final_a",
+      "directory": {
+        "path": "b",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "abc349_b",
+      "label": "C",
+      "title": "Commencement",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc349_b",
+      "directory": {
+        "path": "c",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "abc256_b",
+      "label": "D",
+      "title": "Batters",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc256_b",
+      "directory": {
+        "path": "d",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "abc328_c",
+      "label": "E",
+      "title": "Consecutive",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc328_c",
+      "directory": {
+        "path": "e",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "abc230_c",
+      "label": "F",
+      "title": "X drawing",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc230_c",
+      "directory": {
+        "path": "f",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "abc254_d",
+      "label": "G",
+      "title": "Together Square",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc254_d",
+      "directory": {
+        "path": "g",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "abc271_e",
+      "label": "H",
+      "title": "Subsequence Path",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc271_e",
+      "directory": {
+        "path": "h",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    },
+    {
+      "id": "abc224_f",
+      "label": "I",
+      "title": "Problem where +s Separate Digits",
+      "url": "https://atcoder.jp/contests/adt_all_20241002_2/tasks/abc224_f",
+      "directory": {
+        "path": "i",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
+    }
+  ]
+}

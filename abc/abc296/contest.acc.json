@@ -38,7 +38,12 @@
       "id": "abc296_e",
       "label": "E",
       "title": "Transition Game",
-      "url": "https://atcoder.jp/contests/abc296/tasks/abc296_e"
+      "url": "https://atcoder.jp/contests/abc296/tasks/abc296_e",
+      "directory": {
+        "path": "e",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc296_f",

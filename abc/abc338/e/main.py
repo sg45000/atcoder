@@ -6,6 +6,8 @@ from collections import defaultdict, deque
 from statistics import median_low
 import sys
 
+from sortedcontainers import SortedSet
+
 sys.setrecursionlimit(10**9)
 
 T = TypeVar("T")
@@ -295,7 +297,9 @@ def inversion_number(xs: List[int]):
     num = 0
     bit = BIT(len(xs))
     for i in range(len(xs)):
-        num += i - bit.sum(xs[i])  # num += 現時点でbitに移動した個数 - i番目の数値より小さい数値の個数
+        num += i - bit.sum(
+            xs[i]
+        )  # num += 現時点でbitに移動した個数 - i番目の数値より小さい数値の個数
         bit.add(xs[i], 1)
 
     return num
@@ -547,3 +551,21 @@ def accumulate_2d(arr: List[List[int]]):
 #############################
 # Main
 #############################
+N = int(input())
+
+AB = get_ints_n_lines(N)
+
+for i in range(N):
+    a, b = AB[i]
+    AB[i] = [min(a, b), max(a, b)]
+AB.sort(key=lambda x: x[0])
+
+s = SortedSet()
+for a, b in AB:
+    if s.bisect_left(a) != s.bisect_left(b):
+        print("Yes")
+        exit()
+    s.add(a)
+    s.add(b)
+
+print("No")

@@ -37,7 +37,12 @@
       "id": "abc246_d",
       "label": "D",
       "title": "2-variable Function",
-      "url": "https://atcoder.jp/contests/abc246/tasks/abc246_d"
+      "url": "https://atcoder.jp/contests/abc246/tasks/abc246_d",
+      "directory": {
+        "path": "d",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc246_e",

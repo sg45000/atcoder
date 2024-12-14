@@ -910,19 +910,19 @@ def lookup_closest_value(xs: List[T], x: T) -> T | None:
 #############################
 S = int(input())
 MOD = 10**9 + 7
-dp = [[0] * (S + 1) for _ in range(math.floor(S / 3) + 1)]
+dp = [[0] * (S + 1) for _ in range(S + 1)]
 dp[0][0] = 1
 
-for i in range(math.floor(S / 3)):
-    for j in range(i * 3, S + 1):
-        for k in range(3, 10):
-            if j + k <= S:
-                dp[i + 1][j + k] += dp[i][j]
-                dp[i + 1][j + k] %= MOD
-        if j >= 3:
-            dp[i + 1][j] += dp[i][j]
-            dp[i + 1][j] %= MOD
+for i in range(S):
+    c = 0
+    for j in range(S - 2):
+        c += dp[i][j]
+        c %= MOD
+        dp[i + 1][j + 3] = c
 
-for d in dp[:5]:
-    print(d[:20])
-print(dp[-1][S])
+ans = 0
+for i in range(S):
+    ans += dp[i][S]
+    ans %= MOD
+
+print(ans)
