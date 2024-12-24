@@ -1,6 +1,6 @@
 .env
 .idea
-.vscode
 sketch
 venv
 target
+.venv

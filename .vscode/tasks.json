@@ -1,0 +1,177 @@
+
+{
+    // Automatically created by phoityne-vscode extension.
+  
+    "version": "2.0.0",
+    "presentation": {
+      "reveal": "always",
+      "panel": "new"
+    },
+    "tasks": [
+      // {
+      //   // F7
+      //   "group": {
+      //     "kind": "build",
+      //     "isDefault": true
+      //   },
+      //   "label": "haskell build",
+      //   "type": "shell",
+      //   //"command": "cabal configure && cabal build"
+      //   "command": "stack build"
+      // },
+      // {
+      //   // F6
+      //   "group": "build",
+      //   "type": "shell",
+      //   "label": "haskell clean & build",
+      //   //"command": "cabal clean && cabal configure && cabal build"
+      //   "command": "stack clean && stack build"
+      //   //"command": "stack clean ; stack build"  // for powershell
+      // },
+      // {
+      //   // F8
+      //   "group": {
+      //     "kind": "test",
+      //     "isDefault": true
+      //   },
+      //   "type": "shell",
+      //   "label": "haskell test",
+      //   //"command": "cabal test"
+      //   "command": "stack test"
+      // },
+      // {
+      //   // F6
+      //   "isBackground": true,
+      //   "type": "shell",
+      //   "label": "haskell watch",
+      //   "command": "stack build --test --no-run-tests --file-watch"
+      // },
+      {
+        "label": "test py",
+        "type": "shell",
+        "command": "cd ${fileDirname} && oj t -c \"python ./main.py\" -d ./tests/",
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "submit py",
+        "type": "shell",
+        "command": "cd ${fileDirname} && oj t -c \"python ./main.py\" -d ./tests/ && acc s main.py -- --guess-python-interpreter pypy -w 0 -y",
+        "group": "none",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "submit (force) py",
+        "type": "shell",
+        "command": "cd ${fileDirname} && acc s main.py -- --guess-python-interpreter pypy -w 0 -y",
+        "group": "none",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "debug py",
+        "type": "shell",
+        "command": "cd ${fileDirname} && main.py  ",
+        "group": "none",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "test rs",
+        "type": "shell",
+        "command": "cd ${fileDirname} && mv main.rs ../../src/main.rs && oj t -c \"cargo run\" -d ./tests/",
+        "group": {
+          "kind": "test",
+          "isDefault": true
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared",
+          "showReuseMessage": false,
+          "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "submit rs",
+        "type": "shell",
+        "command": "cd ${fileDirname} && oj t -c \"rustc ./main.rs\" -d ./tests/ && acc s main.rs -w 0 -y",
+        "group": "none",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "submit (force) rs",
+        "type": "shell",
+        "command": "cd ${fileDirname} && acc s main.rs",
+        "group": "none",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "debug rs",
+        "type": "shell",
+        "command": "cd ${fileDirname} && main.rs",
+        "group": "none",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared",
+          "showReuseMessage": true,
+          "clear": false
+        },
+        "problemMatcher": []
+      }
+    ]
+  }
+  

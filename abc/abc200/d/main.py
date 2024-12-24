@@ -10,9 +10,9 @@ from collections import defaultdict, deque
 from statistics import median_low
 import sys
 from sortedcontainers import SortedSet, SortedList, SortedDict
-# from atcoder.segtree import SegTree
-# from atcoder.scc import SCCGraph
-# from atcoder.lazysegtree import LazySegTree
+from atcoder.segtree import SegTree
+from atcoder.scc import SCCGraph
+from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
