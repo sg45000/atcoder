@@ -9,19 +9,34 @@
       "id": "abc115_a",
       "label": "A",
       "title": "Christmas Eve Eve Eve",
-      "url": "https://atcoder.jp/contests/abc115/tasks/abc115_a"
+      "url": "https://atcoder.jp/contests/abc115/tasks/abc115_a",
+      "directory": {
+        "path": "a",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc115_b",
       "label": "B",
       "title": "Christmas Eve Eve",
-      "url": "https://atcoder.jp/contests/abc115/tasks/abc115_b"
+      "url": "https://atcoder.jp/contests/abc115/tasks/abc115_b",
+      "directory": {
+        "path": "b",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc115_c",
       "label": "C",
       "title": "Christmas Eve",
-      "url": "https://atcoder.jp/contests/abc115/tasks/abc115_c"
+      "url": "https://atcoder.jp/contests/abc115/tasks/abc115_c",
+      "directory": {
+        "path": "c",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc115_d",

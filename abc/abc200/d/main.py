@@ -999,9 +999,28 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N,M = get_ints()
-ABC = get_ints_n_lines(M)
+N = int(input())
+A = get_ints()
 
-G = []
+A = list(map(lambda a: a % 200, A))
+S = defaultdict(list)
 
-for i in range():
+def answer(b, c):
+    print("Yes")
+    print(len(b), *b)
+    print(len(c), *c)
+    exit()
+
+for i in range(N):
+    if len(S[A[i]]) > 0:
+        answer(S[A[i]], [i + 1])
+    else:
+        S[A[i]] = [i + 1]
+    for j in range(200):
+        if len(S[j]) > 0 and S[j][-1] != i + 1:
+            if len(S[(j + A[i]) % 200]) > 0:
+                answer([*S[j], i + 1], S[(j + A[i]) % 200])
+            else:
+                S[(j + A[i]) % 200] = [*S[j], i + 1]
+
+print("No")

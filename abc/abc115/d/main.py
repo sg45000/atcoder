@@ -2,7 +2,7 @@ import bisect
 import copy
 import heapq
 from math import sqrt
-from functools import reduce
+from functools import reduce, cache
 from operator import xor
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
 from itertools import accumulate, chain, count, permutations
@@ -10,9 +10,10 @@ from collections import defaultdict, deque
 from statistics import median_low
 import sys
 from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
-from atcoder.scc import SCCGraph
-from atcoder.lazysegtree import LazySegTree
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazy
+# segtree import LazySegTree
 
 import pypyjit
 
@@ -1001,20 +1002,30 @@ def calculateIntersectionVolume(p, q):
 #############################
 N, X = get_ints()
 
+@cache
+def burger_len(L):
+    if L == 0:
+        return 1
+    return burger_len(L - 1) * 2 + 3
 
-def dfs(bg, x):
-    if x == 0:
-        return bg
-    if bg[0] == 'B':
-        'B' + str(int(bg[1]) + 1) + bg[2:] + 'P1' + B
-    return dfs("B" + bg + "P" + bg + "B", x - 1)
+@cache
+def patty_len(L):
+    if L == 0:
+        return 1
+    return patty_len(L - 1) * 2 + 1
 
+def dfs(L, x):
+    if L == 0:
+        return 1
+    if x == 1:
+        return 0
+    elif x <= burger_len(L - 1) + 1:
+        return dfs(L - 1, x - 1)
+    elif x == burger_len(L - 1) + 2:
+        return patty_len(L - 1) + 1
+    elif x <= burger_len(L - 1) * 2 + 2:
+        return dfs(L - 1, x - burger_len(L - 1) - 2) + patty_len(L - 1) + 1
+    else:
+        return patty_len(L)
 
-bg = dfs("P1", X)
-
-ans = 0
-
-for x in bg:
-    if x == "P":
-        ans += 1
-print(ans)
+print(dfs(N, X))

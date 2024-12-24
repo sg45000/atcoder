@@ -10,9 +10,6 @@ from collections import defaultdict, deque
 from statistics import median_low
 import sys
 from sortedcontainers import SortedSet, SortedList, SortedDict
-# from atcoder.segtree import SegTree
-# from atcoder.scc import SCCGraph
-# from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
@@ -999,9 +996,42 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N,M = get_ints()
-ABC = get_ints_n_lines(M)
+def max_xor_sum(N, K, A):
+    # 各ビット位置における0と1の数を数える
+    bit_count = 40  # 2^40 > 10^12
+    bit_0 = [0] * bit_count  # 各ビットの0の数
+    bit_1 = [0] * bit_count  # 各ビットの1の数
 
-G = []
+    for num in A:
+        for i in range(bit_count):
+            if num & (1 << i):  # i桁目が1なら
+                bit_1[i] += 1
+            else:  # i桁目が0なら
+                bit_0[i] += 1
 
-for i in range():
+    # Xの各ビットを決定し、制約K以下で最大の合計を得る
+    dp = [-1] * (bit_count + 1)  # dpテーブル（初期化）
+    dp[0] = 0  # 初期状態：X=0
+
+    for i in reversed(range(bit_count)):
+        if dp[i] == -1:
+            continue
+        # i桁目でXを0にする場合
+        value_if_0 = (1 << i) * bit_1[i]
+        dp[i + 1] = max(dp[i + 1], dp[i] + value_if_0)
+
+        # i桁目でXを1にする場合（K以下であることが必要）
+        if (K & (1 << i)) != 0:  # Kのi桁目が1ならXのi桁目も1にできる
+            value_if_1 = (1 << i) * bit_0[i]
+            dp[i + 1] = max(dp[i + 1], dp[i] + value_if_1)
+
+    return dp[bit_count]
+
+
+# 入力例
+N = 3
+K = 7
+A = [1, 6, 3]
+
+# 出力
+print(max_xor_sum(N, K, A))

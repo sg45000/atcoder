@@ -999,9 +999,32 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N,M = get_ints()
-ABC = get_ints_n_lines(M)
+M = int(input())
+S1 = input()
+S2 = input()
+S3 = input()
+S1 = S1 * 3
+S2 = S2 * 3
+S3 = S3 * 3
 
-G = []
+ps = list(permutations([S1, S2, S3]))
 
-for i in range():
+def f(s: str, p: list[str]):
+    for i in range(M):
+        if p[0][i] == s:
+            for j in range(i + 1, M * 2):
+                if p[1][j] == s:
+                    for k in range(j + 1, M * 3):
+                        if p[2][k] == s:
+                            return k
+    return INF
+
+ans = INF
+for s in range(10):
+    for p in ps:
+        ans = min(ans, f(str(s), p))
+
+if ans == INF:
+    print(-1)
+else:
+    print(ans)

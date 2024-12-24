@@ -13,7 +13,7 @@ from sortedcontainers import SortedSet, SortedList, SortedDict
 # from atcoder.segtree import SegTree
 # from atcoder.scc import SCCGraph
 # from atcoder.lazysegtree import LazySegTree
-
+import math
 import pypyjit
 
 pypyjit.set_param("max_unroll_recursion=-1")
@@ -999,9 +999,36 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N,M = get_ints()
-ABC = get_ints_n_lines(M)
+N = int(input())
+A = get_ints()
+MOD = 998244353
+dp = [[[0] * (N + 1) for _ in range(N)] for _ in range(N)]
 
-G = []
+if N == 1:
+    print(1)
+    exit()
+elif N == 2:
+    print(math.comb(N, 2))
+    exit()
 
-for i in range():
+for i in range(N):
+    for j in range(i + 1, N):
+        dp[i][j][2] = 1
+
+for i in reversed(range(N)):
+    for j in range(i + 1, N):
+        for k in range(j + 1, N):
+            for L in range(3, N + 1):
+                if A[j] - A[i] == A[k] - A[j]: # 等差数列だったら
+                    dp[i][j][L] += dp[j][k][L-1] % MOD
+
+ans = [N]
+for L in range(2, N + 1):
+    total = 0
+    for i in range(N):
+        for j in range(N):
+            total += dp[i][j][L] % MOD
+            total %= MOD
+    ans.append(total)
+
+print(*ans)
