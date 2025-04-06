@@ -4,15 +4,15 @@ import heapq
 from math import sqrt
 from functools import reduce
 from operator import xor
-from typing import Callable, Generic, List, Set, Tuple, TypeVar
+from typing import Callable, Generic, List, NewType, Set, Tuple, TypeVar
 from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
-from atcoder.scc import SCCGraph
-from atcoder.lazysegtree import LazySegTree
+# from sortedcontainers import SortedSet, SortedList, SortedDict
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
@@ -995,21 +995,105 @@ def calculateIntersectionVolume(p, q):
 
     return max(0, x_max - x_min) * max(0, y_max - y_min) * max(0, z_max - z_min)
 
+#############################
+# 木の直径
+#############################
+
+
+VERTEX = NewType('VERTEX', int)  # 頂点
+COST = NewType('COST', int)  # コスト
+
+
+def tree_size(N: int, G: list[list[Tuple[VERTEX, COST]]]) -> Tuple[VERTEX, VERTEX, COST]:
+    """
+    木の直径(最も遠い頂点同士の距離)を計算する
+    辺にコストがない場合はCOSTを1にする
+
+    tuple(始点, 終点, 距離)が返ってくる
+    """
+    def bfs(s):
+        q = deque()
+        q.append(s)
+        visited = [-1] * N
+        visited[s] = 0
+        while q:
+            u = q.popleft()
+            for v, c in G[u]:
+                if visited[v] >= 0:
+                    continue
+                visited[v] = visited[u] + c
+                q.append(v)
+        max_k = 0
+        max_v = 0
+        for k , v in enumerate(visited):
+            if max_v < v:
+                max_k = k
+                max_v = v
+        return max_k, max_v
+
+    k1, v1 = bfs(0)
+    k2, v2 = bfs(k1)
+    return k1, k2, v2
 
 #############################
 # Main
 #############################
-N, M = get_ints()
-ABC = get_ints_n_lines(M)
+H, W, Y = get_ints()
+A = get_ints_n_lines(H)
 
-G = [[] for _ in range(N)]
-_G = [[] for _ in range(N)]
-for i in range(M):
-    a, b, c = ABC[i]
-    a -= 1
-    b -= 1
-    G[a].append((b, c))
-    _G[b].append((a, c))
 
-for i in range(N):
-    
+def cell_to_number(H: int, W: int, cell: Tuple[int, int]) -> int:
+    h, w = cell
+    return h * W + w
+
+
+def number_to_cell(H: int, W: int, num: int) -> Tuple[int, int]:
+    return (num // W, num % W)
+
+
+uf = UnionFindTree(H * W + 1)
+
+sea = H * W + 1
+in_sea = [False] * (H * W + 1)
+in_sea_count = 0
+
+M = [[] for _ in range(10 ** 5 + 1)]
+for i in range(H):
+    for j in range(W):
+        M[A[i][j]].append((i, j))
+
+def bfs(s):
+    q = deque()
+
+    visited = [[False] * W for _ in range(H)]
+
+    while q:
+        u = q.popleft()
+        for d in vertical_dist():
+            v = (u[0] + d[0], u[1] + d[1])
+            if in_range((0, H - 1), (0, W - 1), v):
+                if in_sea[cell_to_number(v)]:
+                    uf.unite(cell_to_number(u), sea)
+                    in_sea[cell_to_number(u)] = True
+                    in_sea_count += 1
+            else:
+                uf.unite(cell_to_number(v), sea)
+
+for i in range(1, Y + 1):
+    for u in M[i]:
+        for d in vertical_dist():
+            v = (u[0] + d[0], u[1] + d[1])
+            if in_range((0, H - 1), (0, W - 1), v):
+                if A[v[0]][v[1]] <= i:  # 行く先が海面以下だったら
+                    uf.unite(cell_to_number(H, W, u), cell_to_number(H, W, v))
+                if uf.is_same(cell_to_number(H, W, u), sea) or uf.is_same(cell_to_number(H, W, v), sea):
+                    uf.unite(cell_to_number(H, W, u), sea)
+                    in_sea[cell_to_number(H, W, u)] = True
+                    in_sea_count += 1
+            else:  # 行く先が外海だったら
+                if uf.is_same(cell_to_number(H, W, u), sea):
+                uf.unite(cell_to_number(H, W, v), sea)
+                in_sea[cell_to_number(H, W, u)] = True
+                in_sea_count += 1
+
+    print(in_sea_count)

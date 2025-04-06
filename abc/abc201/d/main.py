@@ -9,10 +9,11 @@ from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
-from atcoder.scc import SCCGraph
-from atcoder.lazysegtree import LazySegTree
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
@@ -999,17 +1000,48 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N, M = get_ints()
-ABC = get_ints_n_lines(M)
+H, W = get_ints()
+A = get_chars_n_lines(H)
+dp = [[0] * W for _ in range(H)]
 
-G = [[] for _ in range(N)]
-_G = [[] for _ in range(N)]
-for i in range(M):
-    a, b, c = ABC[i]
-    a -= 1
-    b -= 1
-    G[a].append((b, c))
-    _G[b].append((a, c))
+q = deque()
 
-for i in range(N):
-    
+q.append(("Takahashi", (0, 0)))
+
+
+def next_dist(u):
+    dist = [(u[0] + 1, u[1]), (u[0], u[1] + 1)]
+    return [(i, j) for i, j in dist if i < H and j < W]
+
+
+def point(p, m):
+    def mark():
+        if m == "+":
+            return 1
+        else:
+            return -1
+
+    m = mark()
+    if p == "Takahashi":
+        return m
+    else:
+        return -m
+
+
+while q:
+    p, u = q.popleft()
+
+    for v in next_dist(u):
+        dp[v[0]][v[1]] = max(point(p, A[v[0]][v[1]]) + dp[u[0]][u[1]], dp[v[0]][v[1]])
+        if p == "Takahashi":
+            q.append(("Aoki", v))
+        else:
+            q.append(("Takahashi", v))
+
+print(dp)
+if dp[-1][-1] > 0:
+    print("Takahashi")
+elif dp[-1][-1] == 0:
+    print("Draw")
+else:
+    print("Aoki")

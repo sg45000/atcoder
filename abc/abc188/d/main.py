@@ -9,10 +9,12 @@ from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
-from atcoder.scc import SCCGraph
-from atcoder.lazysegtree import LazySegTree
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
+
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
@@ -999,17 +1001,22 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N, M = get_ints()
-ABC = get_ints_n_lines(M)
+N, C = get_ints()
+ABC = get_ints_n_lines(N)
 
-G = [[] for _ in range(N)]
-_G = [[] for _ in range(N)]
-for i in range(M):
-    a, b, c = ABC[i]
-    a -= 1
-    b -= 1
-    G[a].append((b, c))
-    _G[b].append((a, c))
+A_C = list(map(lambda x: [x[0], x[2]], sorted(ABC, key=lambda x: x[0])))
+B_C = list(map(lambda x: [x[1] + 1, -x[2]], sorted(ABC, key=lambda x: x[1])))
+_ABC = list(sorted(A_C + B_C, key=lambda x: x[0]))
+acc = defaultdict(int)
+for i, c in _ABC:
+    acc[i] += c
 
-for i in range(N):
-    
+ACC = list(acc.items())
+ans = 0
+price = 0
+for i in range(len(ACC) - 1):
+    days = ACC[i + 1][0] - ACC[i][0]
+    price += ACC[i][1]
+    ans += days * (price if price < C else C)
+
+print(ans)

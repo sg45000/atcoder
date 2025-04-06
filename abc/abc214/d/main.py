@@ -1,7 +1,7 @@
 import bisect
 import copy
 import heapq
-from math import sqrt
+from math import comb, sqrt
 from functools import reduce
 from operator import xor
 from typing import Callable, Generic, List, Set, Tuple, TypeVar
@@ -9,10 +9,11 @@ from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
-from atcoder.scc import SCCGraph
-from atcoder.lazysegtree import LazySegTree
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
@@ -999,17 +1000,25 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N, M = get_ints()
-ABC = get_ints_n_lines(M)
+N = int(input())
+UVW = get_ints_n_lines(N - 1)
 
-G = [[] for _ in range(N)]
-_G = [[] for _ in range(N)]
-for i in range(M):
-    a, b, c = ABC[i]
-    a -= 1
-    b -= 1
-    G[a].append((b, c))
-    _G[b].append((a, c))
+uf = UnionFindTree(N)
 
-for i in range(N):
-    
+UVW.sort(key=lambda x: x[2])
+
+P = [1] * N
+
+ans = 0
+for u, v, w in UVW:
+    u -= 1
+    v -= 1
+    a = P[uf.find_root(u)]
+    P[uf.find_root(u)] = 0
+    b = P[uf.find_root(v)]
+    P[uf.find_root(v)] = 0
+    ans += a * b * w
+    uf.unite(u, v)
+    P[uf.find_root(u)] += a + b
+
+print(ans)

@@ -9,10 +9,10 @@ from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
-from atcoder.scc import SCCGraph
-from atcoder.lazysegtree import LazySegTree
+# from sortedcontainers import SortedSet, SortedList, SortedDict
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
@@ -999,17 +999,29 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N, M = get_ints()
-ABC = get_ints_n_lines(M)
+N = int(input())
+A = get_ints()
+S = input()
 
-G = [[] for _ in range(N)]
-_G = [[] for _ in range(N)]
-for i in range(M):
-    a, b, c = ABC[i]
-    a -= 1
-    b -= 1
-    G[a].append((b, c))
-    _G[b].append((a, c))
-
+M = [0,0,0]
+E = [[0, 0, 0] for _ in range(3)]
+ans = 0
 for i in range(N):
-    
+    s = S[i]
+    match s:
+        case "M":
+            M[A[i]] += 1
+        case "E":
+            for j in range(3):
+                E[A[i]][j] += M[j]
+        case "X":
+            for u in range(3):
+                for v in range(3):
+                    mex = set([0, 1, 2, 3])
+                    mex.discard(A[i])
+                    mex.discard(u)
+                    mex.discard(v)
+                    rest = min(list(mex))
+                    ans += rest * E[u][v]
+
+print(ans)

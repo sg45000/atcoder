@@ -8,7 +8,8 @@ from itertools import chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
 
 
 sys.setrecursionlimit(10**9)
@@ -911,11 +912,11 @@ N, M = get_ints()
 MOD = 998244353
 ans = 0
 for i in range(60):
-    if not ((1 << i) & M):
+    if not (1 << i) & M:
         continue
-    r = (1 << i) * 2
-    s = ((N + 1) // r) * (1 << i)
-    a = max(0, ((N + 1) % r) - (1 << i))
-    ans += (s + a) % MOD
+    p = 2 ** (i + 1)
+    q = (N + 1) // p * (1 << i)
+    r = max(0, (N + 1) % p - (1 << i))
+    ans += q + r
     ans %= MOD
 print(ans)

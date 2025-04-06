@@ -8,7 +8,8 @@ from itertools import chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
 
 
 sys.setrecursionlimit(10**9)
@@ -863,22 +864,24 @@ N = int(input())
 
 XYZ = get_ints_n_lines(N)
 
-TOTAL_Z = sum([z for x, y, z in XYZ])
+total_z = sum([z for x, y, z in XYZ])
 
-st = [INF] * (TOTAL_Z + 1)
-st[0] = 0
+dp = [[INF] * (total_z + 1) for _ in range(N + 1)]
+for i in range(N):
+    dp[i][0] = 0
 
 for i in range(N):
     x, y, z = XYZ[i]
-    next_st = [0] * (TOTAL_Z + 1)
-    for j in range(TOTAL_Z + 1):
+    for j in range(total_z + 1):
         if j - z >= 0:
-            next_st[j] = min(st[j - z] + (0 if x > y else ((y - x) // 2 + 1)), st[j])
+            if x > y:
+                dp[i + 1][j] = min(dp[i][j - z], dp[i][j])
+            else:
+                dp[i + 1][j] = min(dp[i][j - z] + ((y - x) // 2) + 1, dp[i][j])
         else:
-            next_st[j] = st[j]
-    st = next_st
-
+            dp[i + 1][j] = dp[i][j]
 ans = INF
-for p in st[TOTAL_Z // 2 + 1 :]:
-    ans = min(ans, p)
+for d in dp[-1][total_z // 2 + 1 :]:
+    ans = min(ans, d)
+
 print(ans)

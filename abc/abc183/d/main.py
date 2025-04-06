@@ -9,10 +9,12 @@ from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
-from atcoder.scc import SCCGraph
-from atcoder.lazysegtree import LazySegTree
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
+
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazysegtree import LazySegTree
 
 import pypyjit
 
@@ -999,17 +1001,17 @@ def calculateIntersectionVolume(p, q):
 #############################
 # Main
 #############################
-N, M = get_ints()
-ABC = get_ints_n_lines(M)
+N, W = get_ints()
+STP = get_ints_n_lines(N)
 
-G = [[] for _ in range(N)]
-_G = [[] for _ in range(N)]
-for i in range(M):
-    a, b, c = ABC[i]
-    a -= 1
-    b -= 1
-    G[a].append((b, c))
-    _G[b].append((a, c))
+acc = [0] * (2 * 10**5 + 2)
 
 for i in range(N):
-    
+    s, t, p = STP[i]
+    acc[s] += p
+    acc[t] -= p
+
+for i in range(2 * 10**5 + 1):
+    acc[i + 1] += acc[i]
+
+print_y_n(all([a <= W for a in acc]))

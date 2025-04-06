@@ -8,12 +8,13 @@ from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
 
 
 sys.setrecursionlimit(10**9)
 
-T = TypeVar("T")
+t = TypeVar("T")
 
 INF = float("inf")
 
@@ -41,7 +42,7 @@ get_chars_with_trim = lambda s: list(input().split(s))
 #############################
 
 
-def identify(x: T) -> T:
+def identify(x: t) -> t:
     return x
 
 
@@ -50,7 +51,7 @@ def identify(x: T) -> T:
 #############################
 
 
-class FlexibleList(Generic[T], list):
+class FlexibleList(Generic[t], list):
     begin: int
     end: int
 
@@ -78,7 +79,7 @@ class FlexibleList(Generic[T], list):
 #############################
 
 
-def remove_from_set(s: Set[T], d: T) -> Set[T]:
+def remove_from_set(s: Set[t], d: t) -> Set[t]:
     """
     与えたSetには影響を与えず要素を削除したSetを返す
     """
@@ -143,8 +144,8 @@ def in_range(
 
 
 def linear_scan_n(
-    grid: FlexibleList[FlexibleList[T]], n: int, d: (int, int), s: (int, int)
-) -> List[T] | None:
+    grid: FlexibleList[FlexibleList[t]], n: int, d: (int, int), s: (int, int)
+) -> List[t] | None:
     """_summary_
     gridの指定した数だけ直線に切り取る
     gridの範囲を超えた場合Noneを返す
@@ -187,7 +188,7 @@ def ixmap(v: Tuple[int, int], h: int, w: int) -> Tuple[int, int]:
 
 
 def next_in_grid_range(
-    grid: FlexibleList[FlexibleList[T]], s: Tuple[int, int], dist: List[Tuple[int, int]]
+    grid: FlexibleList[FlexibleList[t]], s: Tuple[int, int], dist: List[Tuple[int, int]]
 ) -> List[Tuple[int, int]]:
     """
     s地点からdist方向へ移動した場合の地点を返す。gridの範囲を超えた地点は返さない
@@ -212,7 +213,7 @@ def to_gs(coords: List[Coordinate]) -> GridSet:
     return set(coords)
 
 
-def from_grid_gs(f, grid: FlexibleList[FlexibleList[T]]) -> GridSet:
+def from_grid_gs(f, grid: FlexibleList[FlexibleList[t]]) -> GridSet:
     ret = []
     for i in range(grid.begin, grid.end + 1):
         for j in range(grid[i].begin, grid[i].end + 1):
@@ -859,7 +860,7 @@ def count_digit(i):
 #############################
 
 
-def get_value_with_bisect_right(xs: List[T], x: T) -> T | None:
+def get_value_with_bisect_right(xs: List[t], x: t) -> t | None:
     """
     2分探索によって見つけた要素を返す
     指定の値が見つからなかったら、右にある要素を返す
@@ -872,7 +873,7 @@ def get_value_with_bisect_right(xs: List[T], x: T) -> T | None:
     return xs[i]
 
 
-def get_both_side_value_with_bisect(xs: List[T], x: T) -> Tuple[T | None, T | None]:
+def get_both_side_value_with_bisect(xs: List[t], x: t) -> Tuple[t | None, t | None]:
     """
     2分探索によって見つけた要素の両側の値を返す
     見つけたい値自身が見つかれば、その左の値を一緒に返す
@@ -887,7 +888,7 @@ def get_both_side_value_with_bisect(xs: List[T], x: T) -> Tuple[T | None, T | No
     return (xs[i - 1], xs[i])
 
 
-def lookup_closest_value(xs: List[T], x: T) -> T | None:
+def lookup_closest_value(xs: List[t], x: t) -> t | None:
     """
     近似値を配列の中から見つける
     """
@@ -910,10 +911,11 @@ def lookup_closest_value(xs: List[T], x: T) -> T | None:
 N = int(input())
 MOD = 998244353
 
-D = [1, 10]
-for i in range(1, 60):
-    D.append((D[i] ** 2) % MOD)
+K = len(str(N))
 
+t = (10**K) % MOD
+INV = pow(t - 1, MOD - 2, MOD)
+ans = N * (pow(t, N, MOD) - 1) * INV
+ans %= MOD
 
-def touhi(a, r, n):
-    return a(r**n - 1) // (r - 1)
+print(ans)

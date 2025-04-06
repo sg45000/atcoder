@@ -4,13 +4,16 @@ import heapq
 from math import sqrt
 from functools import reduce
 from operator import xor
-from typing import Callable, Generic, List, Set, Tuple, TypeVar
+from typing import Callable, Generic, List, NewType, Set, Tuple, TypeVar
 from itertools import accumulate, chain, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
-from atcoder.segtree import SegTree
+# from sortedcontainers import SortedSet, SortedList, SortedDict
+# from atcoder.segtree import SegTree
+# from atcoder.scc import SCCGraph
+# from atcoder.lazysegtree import LazySegTree
+
 import pypyjit
 
 pypyjit.set_param("max_unroll_recursion=-1")
@@ -969,5 +972,86 @@ def z_algo(S: str) -> List[int]:
 
 
 #############################
+# 直方体
+#############################
+
+
+def calculateIntersectionVolume(p, q):
+    """
+    2つの直方体の重なっている部分の体積を求める
+    点(a,b,c)と点(d,e,f)を対角線とする立方体を引数に渡す
+    """
+    a, b, c, d, e, f = p
+    g, h, i, j, k, l = q
+
+    x_min = max(a, g)
+    x_max = min(d, j)
+
+    y_min = max(b, h)
+    y_max = min(e, k)
+
+    z_min = max(c, i)
+    z_max = min(f, l)
+
+    return max(0, x_max - x_min) * max(0, y_max - y_min) * max(0, z_max - z_min)
+
+#############################
+# 木の直径
+#############################
+
+
+VERTEX = NewType('VERTEX', int)  # 頂点
+COST = NewType('COST', int)  # コスト
+
+
+def tree_size(N: int, G: list[list[Tuple[VERTEX, COST]]]):
+    """
+    木の直径(最も遠い頂点同士の距離)を計算する
+    辺にコストがない場合はCOSTを1にする
+
+    tuple(始点, 終点, 距離)が返ってくる
+    """
+    def bfs(s):
+        q = deque()
+        q.append(s)
+        visited = [-1] * N
+        visited[s] = 0
+        while q:
+            u = q.popleft()
+            for v, c in G[u]:
+                if visited[v] >= 0:
+                    continue
+                visited[v] = visited[u] + c
+                q.append(v)
+        max_k = 0
+        max_v = 0
+        for k , v in enumerate(visited):
+            if max_v < v:
+                max_k = k
+                max_v = v
+        return max_k, max_v
+
+    k1, v1 = bfs(0)
+    k2, v2 = bfs(k1)
+    return k1, k2, v2
+
+#############################
 # Main
 #############################
+
+N = int(input())
+ABC = get_ints_n_lines(N - 1)
+
+G = [[] * N for _ in range(N)]
+total_c = 0
+
+for i in range(N - 1):
+    a, b, c = ABC[i]
+    G[a - 1].append((b - 1, c))
+    G[b - 1].append((a - 1, c))
+    total_c += c
+
+# 木の長さを求める
+s, g, v = tree_size(N, G)
+
+print(total_c * 2 - v)

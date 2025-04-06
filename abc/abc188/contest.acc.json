@@ -27,7 +27,12 @@
       "id": "abc188_d",
       "label": "D",
       "title": "Snuke Prime",
-      "url": "https://atcoder.jp/contests/abc188/tasks/abc188_d"
+      "url": "https://atcoder.jp/contests/abc188/tasks/abc188_d",
+      "directory": {
+        "path": "d",
+        "testdir": "tests",
+        "submit": "main.py"
+      }
     },
     {
       "id": "abc188_e",

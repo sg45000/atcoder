@@ -8,7 +8,8 @@ from itertools import chain, combinations, count, permutations
 from collections import defaultdict, deque
 from statistics import median_low
 import sys
-from sortedcontainers import SortedSet, SortedList, SortedDict
+
+# from sortedcontainers import SortedSet, SortedList, SortedDict
 
 
 sys.setrecursionlimit(10**9)
@@ -861,13 +862,33 @@ def lookup_closest_value(xs: List[T], x: T) -> T | None:
 #############################
 N = int(input())
 D = get_ints_n_lines(N - 1)
+for i in range(N - 1):
+    D[i] = [0] * (i + 1) + D[i]
 
-st = [0] * (2**N + 1)
 
-for b in range(2**N + 1):
-    for i in range(N - 1):
-        for j in range(i + 1, N):
-            if 1 << i & b and 1 << j & b:
-                ij = (1 << i) + (1 << j)
-                st[b] = max(st[b - ij] + D[i][j - i - 1], st[b])
-print(max(st))
+def dfs(d: list):
+    if all(d):
+        return 0
+    i = d.index(False)
+    d[i] = True
+    t = 0
+    for j in range(i + 1, N):
+        if d[j]:
+            continue
+        d[j] = True
+        t = max(dfs(d) + D[i][j], t)
+        d[j] = False
+    d[i] = False
+    return t
+
+
+if is_odd(N):
+    ans = 0
+    for i in range(N):
+        A = [False] * N
+        A[i] = True
+        ans = max(dfs(A), ans)
+    print(ans)
+else:
+    A = [False] * N
+    print(dfs(A))

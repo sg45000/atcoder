@@ -1,3 +1,4 @@
+from copy import deepcopy, copy
 from functools import reduce
 from typing import Generic, List, Set, Tuple, TypeVar
 from itertools import chain, count
@@ -160,3 +161,27 @@ def normalize_gs(coords: Set[Coordinate]) -> Set[Coordinate]:
 #############################
 # Main
 #############################
+N,K,P = getInts()
+CA = [getInts() for _ in range(N)]
+INF = float("inf")
+
+
+
+D = {(0,) * K: 0}
+
+
+for i in range(N):
+    c = CA[i][0]
+    A = tuple(CA[i][1:])
+    new_D = D.copy()
+    for ps, v in D.items():
+        new_ps = tuple([min(a + p, P) for a, p in zip(A, ps)])
+        next_v = new_D.get(new_ps, INF)
+        new_D[new_ps] = min(next_v, v + c)
+
+    D = new_D
+ans = D.get((P,) * K)
+if ans is not None:
+    print(ans)
+else:
+    print(-1)
